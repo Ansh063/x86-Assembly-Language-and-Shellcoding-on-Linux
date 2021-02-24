@@ -1,0 +1,21 @@
+
+ Assembly Language is the gateway to understanding exploitation techniques, reverse Engineering, shellcoding and 
+ other low level fields in information security.
+ 
+ 1. What is Assembly Language ? 
+   
+	- Low level programming language 
+	- Communicate with microprocessor 
+	- Specific to the Processor family 
+	- An almost one to one correspondence with machine code 
+	
+ 	     
+  Assembly Language  --------Assembler + Linker ---------> Machine Language
+  
+  Different Processors - Different Assembly Language 
+  
+  - Intel
+  - ARM
+  - MIPS
+  
+   
