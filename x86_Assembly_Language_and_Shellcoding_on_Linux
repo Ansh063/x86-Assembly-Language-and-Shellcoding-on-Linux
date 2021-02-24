@@ -1,6 +1,6 @@
 
- Assembly Language is the gateway to understanding exploitation techniques, reverse Engineering, shellcoding and 
- other low level fields in information security.
+ # Assembly Language is the gateway to understanding exploitation techniques, reverse Engineering, shellcoding and 
+   other low level fields in information security.
  
  1. What is Assembly Language ? 
    
@@ -10,12 +10,128 @@
 	- An almost one to one correspondence with machine code 
 	
  	     
-  Assembly Language  --------Assembler + Linker ---------> Machine Language
+  Assembly Language  -------- Assembler + Linker ---------> Machine Language
   
-  Different Processors - Different Assembly Language 
+  ------------------------------------------------------------------------------------------------------------------
+  
+  # Different Processors - Different Assembly Language 
   
   - Intel
   - ARM
   - MIPS
   
+  ------------------------------------------------------------------------------------------------------------------
+  
+  # Intel Achitecture 
+  
+  -> IA - 32
+  -> IA - 64
+  
+  ------------------------------------------------------------------------------------------------------------------
+  
+  # Why Intel Architecture - 32 Bit ?
+  
+  - Large number of machines out there still running IA-32
+  - Logical Progression to IA - 64
+  - Shellcoding, Encoder, Decoder, Packers etc Implementation Difference. 
+  ------------------------------------------------------------------------------------------------------------------
+  # Installation of NASM shell : 
+  
+  - nasm : apt-get install nasm build-essential
    
+  # Exercise 1.2 : Understanding your CPU
+  
+  - Find CPU detail on the Ubuntu System
+  	- lscpu 
+  	- cat /proc/cpuinfo
+  - How do you know that if you are on a 32/64 bit CPU ? 
+  - How do you know your CPUs additional capabilities Such as FPU, MMX, SSE, SSE2 etc
+  
+  ------------------------------------------------------------------------------------------------------------------
+     
+  # Intel Achitecture - 32 
+  
+  System Organization Basics 
+  
+  1. CPU 
+  
+   	Control Unit  <------>  Execution Unit  <-------> Registers
+   						<-------> Flags 
+   
+   Control Unit   : Retrieve / Decode Instruction, Retrive / Store data in memory 
+   Execution Unit : Actual Execution of Instructions happens here 
+   Registers      : Internal Memory location used as "Variable"
+   Flags  	  : Used to indicate various "events" when execution is happening.
+   
+   2. IA-32 Registers 
+   
+   - General Purpose Registers
+   - Segment Register
+   - Flags, EIP
+   - Floating Point Unit Register
+   - MMX Register
+   - XMM Register
+    					
+   # General Purpose Register 
+   							  7
+          ----------------------------------------------------------------
+   EAX    |				|	AH	  |	AL	 |	
+     	  ----------------------------------------------------------------
+  	  31  				15 ============== AX =========== 0	  
+     
+     							  7
+          ----------------------------------------------------------------
+   EBX    |				|	BH	  |	BL	 |	
+     	  ----------------------------------------------------------------
+  	  31  				15 ============== BX =========== 0	  
+
+   							  7
+          ----------------------------------------------------------------
+   ECX    |				|	CH	  |	CL	 |	
+     	  ----------------------------------------------------------------
+  	  31  				15 ============== CX =========== 0	  
+
+   							  7
+          ----------------------------------------------------------------
+   EDX    |				|	DH	  |	DL	 |	
+     	  ----------------------------------------------------------------
+  	  31  				15 ============== AX =========== 0	  
+
+
+
+   							  7
+          ----------------------------------------------------------------
+   ESP    |				|		  |		 |	
+     	  ----------------------------------------------------------------
+  	  31  				15 ============== SP =========== 0	  
+
+   							  7
+          ----------------------------------------------------------------
+   EBP    |				|		  |		 |	
+     	  ----------------------------------------------------------------
+  	  31  				15 ============== BP =========== 0	  
+
+   							  7
+          ----------------------------------------------------------------
+   ESI    |				|		  |		 |	
+     	  ----------------------------------------------------------------
+  	  31  				15 ============== SI =========== 0	  
+
+   							  7
+          ----------------------------------------------------------------
+   EDI    |				|		  |		 |	
+     	  ----------------------------------------------------------------
+  	  31  				15 ============== DI =========== 0	  
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
