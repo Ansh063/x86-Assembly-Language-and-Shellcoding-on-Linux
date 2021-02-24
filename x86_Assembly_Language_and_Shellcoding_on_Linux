@@ -124,14 +124,259 @@
   	  31  				15 ============== DI =========== 0	  
      
      
+  # GPR Common Functionality 
+  
+  - EAX : Accumulator Register - Used for storing operands and result data 
+  - EBX : Base Register - Pointer to Data 
+  - ECX : Counter Register - Loop Operation 
+  - EDX : Data Register - I/O Pointer
+  - ESI EDI : Data Pointer Register for memory operation 
+  - ESP : Stack Pointer Register 
+  - EBP : Stack Data pointer Register
+  
+      
+  # Segment Register 
+  
+  		------------------------------
+  	CS	|	   Code 	     |     Code Segment 
+  	 	------------------------------
+  	DS	|	   Data 	     |	   Data segment  	
+  		------------------------------
+  	SS	|	   Stack	     |     stack segmeny
+  		------------------------------
+  	ES	|	   Data  	     |
+  		------------------------------
+  	FS	|	   Data		     |
+  		------------------------------
+  	GS   	|	   Data		     |	
+     		------------------------------
+     		15			     0	
+     		
+	Ussage Depend on memory model - Flag or segmented ?      
      
+  # EFLAGS Registers
+  
+  - X ID Flags (ID)
+  - X Virtual Interrupt Pending (VIP)
+  - X Virtual Interrupt Flag (VIF)
+  - X Alignment Check (AC)
+  - X Virtual -8086 Mode (VM)
+  - X Resume Flag (RF)
+  - X Nested Task (NT)
+  - X I/O Privilege Level (IOPL)
+  - S Overflow Flag (OF)
+  - C Directional Flag (DF)
+  - X Interrupt enable Flag (IF)
+  - X Trap Flag (TF)
+  - S Sign Flag (SF)
+  - S Zero Flag (ZF) 
+  - S Auxiliary Carry Flag (AF)
+  - S Parity Flag (PF)
+  - S Carry Flag (CF)
      
-     
-     
-     
-     
-     
-     
-     
-     
-     
+  S : Indicates a Status Flag
+  X : Indicates a system Flag  
+  C : Indicates a Control Flag 
+  
+  
+  # EIP 
+  	- Instruction Pointer 
+  	- Holy grail for shellcoding, Exploit research etc.
+  	- it contain the instruction pointer i.e next instruction to be executed . It is 32 bit wide 
+  	    
+  # Floating Point Unit or x87 
+  	- FPU has different Data registers for manipulating Floating point numbers.
+  	- Size : 80 bits 
+  	
+  # SIMD
+  	- Simgle Instruction Multiple Data 
+  	- Extension 
+  		- MMX
+  		- SSE
+  		- SSE2
+  		- SSE3
+  	- Uses MMX and XMM Registers 
+  	
+  # MMX 
+  
+  		-------------------------
+  	ST(0)	|	|	MM0	|		 
+  		-------------------------
+  	ST(1)	|	|	MM1	|		 
+  		-------------------------
+  	ST(2)	|	|	MM2	|		 
+  		-------------------------
+  	ST(3)	|	|	MM3	|		 
+  		-------------------------
+  	ST(4)	|	|	MM4	|		 
+  		-------------------------
+  	ST(5)	|	|	MM5	|		 
+  		-------------------------
+  	ST(6)	|	|	MM6	|		 
+  		-------------------------
+  	ST(7)	|	|	MM7	|		 
+  		-------------------------
+  		79	63		0
+  		
+  # XMM 128 bit
+  
+  		-------------------------
+  		|	  XMM0		|
+  		-------------------------
+  		|	  XMM1		|
+  		-------------------------
+  		|	  XMM2		|
+  		-------------------------
+  		| 	  XMM3		|
+  		-------------------------
+  		|	  XMM4		|
+  		-------------------------
+  		|	  XMM5		|
+  		-------------------------
+  		| 	  XMM6		|
+  		-------------------------
+  		|	  XMM7		|
+  		-------------------------
+  		127			0
+  		
+  # Inspect the general purpose, segment , EFLAGS, FPU, XMM, MMX registers
+  	- gdb /bin/bash
+  	- break main 
+  	- run
+  	- info registers : show all the registers 
+  	- To display any particular register : display /x $eax 
+  					     : display /x $ax 
+  					     : display /x $ecx
+  					     : display /x $cx
+  	- disassemble $eip : in order to look next instruction 
+  
+  NOTE : By default gdb does not show FPU ,MMX, XMM registers      
+	- To show all the registers : info all-registers
+	
+	There are two type of syntax in gdb 1. ATNT 2. INTEL by default is ATNT to change
+		- set disassembly-flavour intel
+ 	 
+  # CPU Modes and Memory Management 
+  
+    CPU Modes For IA 32
+    
+    	- Real Mode 
+    		- At power up or reset 
+    		- Can only access 1MB Memory 
+    		- No memory protection 
+    		- Privilege Levels (Kernel vs User Space) not Possible 
+    		
+    	- Protected Mode 
+    		- upto 4GB Memory 
+    		- memory protection / privilege level / multi tasking 
+    		- supports Virtual-8086 mode 
+    		
+    	- System Management mode 
+    		- Used for power management task 
+    		
+    Memory Models : 
+    	- Flat Model 
+    		- In this the address is linear across linear Address space  
+    	- Segmented Model 
+    		- In this we use a segment selector and offset in that segment to access location
+    	- Real-Address Mode Model 
+    		- Special case of segmented model 
+    		
+    	
+   Note : IA-32 Linux basically uses  protected mode  and flat memory model for functioning 
+   
+   # 32-Bit linux uses 
+   	- Protected Mode 
+   	- Flat Memory Model 
+   	- 4GB Address Space = 2^32
+   	- Memory Protection 
+   	- Privilege level of code 
+   	- Segmented registers point to segment descriptors 
+   	
+   # Virtual Memory Model 
+   	- Kernel Space (1 GB)
+   	- User Space (3 GB)
+   	
+   	-----------------
+   	   Kernel Stack    
+   	-----------------
+   	     Stack             Function Args + Local Variable 
+   	-----------------
+   	Shared Libs + Mapping  
+   	-----------------
+   	     Heap 	       Dynamic Memory 
+   	-----------------
+   	     BSS	       Uninitialized Data  	
+   	-----------------	  		  	
+   	     Data	       initialiZed Data 
+   	-----------------
+   	     Text	       Program Code 
+  
+  # View Process Organization 
+  	- /Proc
+  		- /proc/pid/maps
+  	- pmap
+  	- Attach and view using GDB 
+  
+  1. Using /proc/pid/maps 
+  
+  	ex. 55f04c3f5000-55f04c423000 r--p 00000000 08:01 1868238                    /usr/bin/bash
+  	
+  	55f04c3f5000-55f04c423000 : Start and End Address of the section 
+  	
+  	r--p : Permissions of the section 
+  		r = readable
+  		w = writeable
+  		x = executable
+  		p = private not shared 
+  		s = shared 
+  	
+  	00000000 : Offset in file for memory mapped files. 0 Otherwise.
+  	
+  	08:01 : Major-Minor Device number of device from where the file was loaded 
+  	
+  	1868238 : inode number 
+  	
+  	/usr/bin/bash : File Path 
+  2. pmap [pid]
+  	
+  3. Using GDB 
+  	- gdb /bin/bash
+  	- break main 
+  	- run 
+  	- info proc mapping 
+  	
+  	   		
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+   
+  		
+  		
+  		
+  		
+  
