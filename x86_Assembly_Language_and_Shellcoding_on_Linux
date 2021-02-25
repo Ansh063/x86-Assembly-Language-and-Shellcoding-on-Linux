@@ -380,7 +380,7 @@
   	
   - Modern Implementation using VDSO [Virtual Dynamic Shared Object]
   
-  Note : TO check all the system call in 32 bit : 
+  Note : To check all the system call in 32 bit : 
   command : vim /usr/include/x86_64-linux-gnu/asm/unistd_32.h
   
   
