@@ -346,6 +346,59 @@
   	- run 
   	- info proc mapping 
   	
+  
+  
+  # Hello World 
+  
+  - IA-32 Instruction set 
+  	- General Purpose instruction
+  	- x87 FPU Instruction 
+  	- MMX / SSE / SSE2 / SSE3 / SSE4
+  	- Other Instruction set extension 
+  	 
+  - Programming in Assembly 
+  	- NASM + LD for assembling and linking 
+  	- Executable in ELF Format
+  
+  
+  # Why System calls ? 
+  
+  	- Leverage OS for tasks 
+  	- imagine if you had to write code from scratch to : 
+  		- write to disk
+  		- print on screen 
+  		- ......
+  	- System calls provide a simple interface for user space programs to the kernel 
+  	
+  user space program -> Interrupt Handler Table -> System call handler -> System call routine   
+      (0x80)
+  
+  # IA-32 Mechanism to invoke-System calls 
+  
+  - int 0x80
+  - SYSNTER
+  	
+  - Modern Implementation using VDSO [Virtual Dynamic Shared Object]
+  
+  Note : TO check all the system call in 32 bit : 
+  command : vim /usr/include/x86_64-linux-gnu/asm/unistd_32.h
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   	   		
   
   
