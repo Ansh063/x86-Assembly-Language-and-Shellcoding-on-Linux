@@ -380,11 +380,43 @@
   	
   - Modern Implementation using VDSO [Virtual Dynamic Shared Object]
   
-  Note : To check all the system call in 32 bit : 
+  Note : TO check all the system call in 32 bit : 
   command : vim /usr/include/x86_64-linux-gnu/asm/unistd_32.h
   
+  to get description of any system call use : man 2 [system call name]
+  					    : man 2 write 
+  					    : man 2 exit 
   
+  File Descriptor : fd : 0 for input (stdin)
+  			 1 for output (stdout)
+  			 2 for error 
+  			  
+  Exit Statement : 0 : program exit with no error 
+  		   non zero value : program exited with some error 
+  		   
+  mov intstruction : 
+  	mov instruction is responsible for moving data into registers, between registers and memory location.
+    
+  # How to compile and link the asm file 
   
+  Compiling : 
+  - nasm -f elf32 -o helloworld.o helloworld.asm
+  Linking : 
+  - ld -m elf_i386 -o helloworld helloworld.o  
+  
+  # Exercise : 
+  
+  Use GDB to step through the hello world program and observe 
+  	- CPU Registers 
+  	- Memory Loation 
+  	- ......
+  	
+  NOTE : To use gdb, before running gdb run : export SHEL=/bin/sh
+  
+  Tracing of program : 
+  -> to see disassemble output in intel syntax run : set disassembly-flavour intel
+  -> To steps through the instruction use command : stepi
+  -> To examine memory use : x/s this will convert the stream of memory into string 
   
   
   
