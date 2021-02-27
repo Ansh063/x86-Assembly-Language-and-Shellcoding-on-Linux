@@ -414,54 +414,161 @@
   NOTE : To use gdb, before running gdb run : export SHEL=/bin/sh
   
   Tracing of program : 
+  
   -> to see disassemble output in intel syntax run : set disassembly-flavour intel
   -> To steps through the instruction use command : stepi
   -> To examine memory use : x/s this will convert the stream of memory into string 
+  -> To single steps to the program : nexti
   
+  # Fundamental Data types : 
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  	   		
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  - Byte - 8 Bits 
+  - Word - 16 Bits 
+  - Double Word - 32 bits 
+  - Quad Word - 64 Bits 
+  - Double Quad word - 128 bits 
    
-  		
-  		
-  		
-  		
+  # nasm 
   
+  - Case Sensitive syntax 
+  - Accessing memory reference with []
+  	- message db 0xAA, 0xBB, 0xCC, 0xDD
+  	- mov eax, message <- move address into eax
+  	- mov eax, [message] <- move value into eax 
+  	  
+  # Defining initialized data in NASM : 
+  
+  1. db : define bites (just for one single byte) 
+  2. dw : define word ( word is for two )
+  	- if you define dw as 'a' it is translated as 0x61 0x00 
+  3. dd : define double word 
+  4. dq : define quad double word 
+  5. dt : define ten bytes 
+  
+  # Declare Uninitialized Data 
+  
+  In order to declare uninitialized data there are two main function : 
+  
+  	1. resb  64 : reserve bytes (It reserve 64 bytes)
+  	2. resw   1 : reserve word (reserve a word) 
+  	
+  # Special Tokens : 
+  
+  - $ : Evaluates to the current line 
+  
+  - $$ : Evalutes to the beginning of the current section  
+  	
+  # EQU and TIMES 
+  
+  - equ : equles 
+  - times : times is replication of one instruction multiple times : ex times 100 movsb 
+  									times 64 db 0
+  									 	
+  # IA-32 uses Little Endian Format 
+  
+   Register : 0A0B0C0D 
+   Memory : a  : 0D   Low memory
+   	    a+1: 0C
+   	    a+2: 0B
+   	    a+3: 0A   high memory 
+   	    
+   
+   # GDB :
+   
+   -> To Show all the function in a binary use : 
+   		- info functions 
+   -> To Figure out the entry point of the program use : 
+   		- (gdb) shell readelf -h [binary Name]  
+ 		- ex (gdb) shell readelf -h DataTypes 
+ 		- Now you get Entry Point address  
+ 		- -h : To print all the headers 
+   -> to get information about all the variables 
+   		- info variables 
+   -> to get address use : 
+   		- print &[variable name]
+   -> There are two ways of printing values of variables :
+   		- 1. x/xb [address of variable]
+   		- 2. x/xb &[variable name]
+   		- 3. x/3xb &[variable name]
+   -> display/x $eax : this will run automatically as the program stops 
+   	
+  
+  # Moving Data : 
+  
+  instruction 
+  
+  label     instruction    operand - register
+  				   - Memory
+  				   - immediate
+  Some Instructions  
+  
+  # MOV
+  
+  - most common instruction in ASM 
+  - Allowed Direction 
+  	- Between Registers
+  	- Memory to register and register to memory 
+  	- Immediate Data to register 
+  	- Immediate data to memory 
+  	
+  # LEA
+  
+  - Load effective Address - load pointer values 
+  - LEA EAX, [label]
+  
+  # XCHG
+  
+  - Exchange (swaps) Values 
+  - XCHG Register, Register
+  - XCHG Register, Memory 
+  
+  	  
+   Hooking is the process of looping of the given instruction when ever the program stops  
+   	(gdb) define hook-stop
+   	>print/x $eax 
+	>print/x $ebx
+	>print/x $ecx
+	>x/8xb &sample
+	>disassemble $eip,+10  
+	>end
+
+  # Stack : 
+  
+  - Used by Processes and threads to store temporary data 
+  	- local variables 
+  	- return addresses 
+  - stack is a last in first out (LIFO) data structure 
+  - ESP (Extended Stack pointer) : Should point on top of Stack 
+  - PUSH : pushes the value onto the stack 
+  - POP  : Remove the top most value from the stack 
+    
+  ----
+  Exercise : 
+  
+  - Use the push/pop .. stack instruction in your program 
+  - use GDB to examine the stack using the ESP and track the changes as the instructions run 
+   
+
+   		
+    
+   
+   				 		 
+    		    
+   	    
+   	    
+    
+  
+  
+ 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+ 
