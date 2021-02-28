@@ -549,7 +549,20 @@
   - use GDB to examine the stack using the ESP and track the changes as the instructions run 
    
 
-   		
+  # Arithmetic Instruction 
+  	
+     	-> Arithmetic Operation affect typically the status flags 
+     	
+     - ADD Destination, Source 
+     - ADC(addition carry) Destination, Source(plus carru flag)
+     - SUB and SBB(substract borrow) 
+     - INC(increment) and DEC(decrement) 
+     
+  # Exercise 1.7.1
+  
+  - Multiply and Divide instruction 
+  - GDB to trace execution and register value 
+  
     
    
    				 		 
