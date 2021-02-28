@@ -563,7 +563,28 @@
   - Multiply and Divide instruction 
   - GDB to trace execution and register value 
   
-    
+  # Unsigned Multiply : 
+  
+  - AL * r/m8   = AX = AH | AL 
+  - AX * r/m16  = DX | AX
+  - EAX * r/m32 = EDX | EAX
+   
+  # unsigned Division : 
+  		Q    R       Q: Quotient R: remender
+  - AX / r/m8 = AL | AH
+  - DX | AX / r/m16 = AX | DX
+  - EDX | EAX / r/m32 = EAX | EDX
+  
+  # Signed Arithmetic : 
+  
+  - IMUL
+  - IDIV
+  
+  Note : OF = 1 and CF = 1 if upper half of result is non-zero 
+     
+  Note : To jump to next breakpoint use : (gdb) c
+  					: c : continue 
+  					
    
    				 		 
     		    
