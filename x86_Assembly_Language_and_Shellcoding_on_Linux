@@ -585,16 +585,107 @@
   Note : To jump to next breakpoint use : (gdb) c
   					: c : continue 
   					
+  # Logical Instruction in Assembly : 
+  		
+  	- AND r/m, r/m/imm (8,16,32 Bits) : (r)register/(m)memory, (r)register/(m)memory/(imm)immediate memory
+  	- OR
+  	- XOR
+  	- NOT
+  	Bitwise Operations 	 				 		 
    
-   				 		 
-    		    
+   Some Other Operation : 
+    	- SAR - Shift Arithematic Right
+    	- SHR - Shift Logical Right
+    	- ROR
+    	- ROL 		    
    	    
    	    
+  # Control Instruction : 
+  
+  	- Control the flow of program 
+  	- Based on "event" eg. calculation led to 0
+  	- Uses Flags to determine decision
+  	- Branching 
+  		- Unconditional - JMP
+  		- Conditional - JXX
+  	
+  	
+  # JMP Unconditional instruction 
+  
+  	- Unconditional 
+  		- Compare it with GOTO Statement in C
+  		
+  	- Types 
+  		- Near Jump : Current Code Segment 
+  			- Short: -127 to +127 from current Position 
+  		- Far Jump : In another Segment 
+  		
+  		     
+  # JXX Conditional instruction 
+  
+  	- Jxx-Conditional 
+  		- JX, JNZ, JA, JAE, JC, JNC etc
+  		- uses flags 
+  	
+  	- Cannot be used for FAR jumps 
+  		- JNZ Label1
+  		- JMP Far_Label 
+  		- lable1:
+  	
+  	- Intel Manual is the best reference 
+  	 
+  	
+  # Exercise : 
+  	- Investigate the use of the following instruction - LOOP, LOOPZ, LOOPNZ etc
+  	- Use GDB to trace through the execution 
+	- all information in loop.nasm file  		  
+  
+  
+  # Procedure : 
+  
+  	- Set of operation Group Together 
+  	- Call often from different places in the code 
+  	- CALL Procedure_Name 
+ 	- in NASM Procedures are defined using Labels 
+ 	 
+  # Format of Procedure : 
+  
+  file procedure.nasm
+  ProcedureName:
+  	...code...
+  	...code...
+  	...code...
+  	RET   	
+  	
+  	
+  # Arguments to a Procedure 
+  
+  	- Passed via Register 
+  	- Passed on the stack 
+  	- Passed as Data structure in memory referenced by registers / or on stack 
+  	
+  # Saving and Restoring State 
+  
+  	- Saving / Restoring Registers 
+  		- PUSHAD/POPAD
+  	- Saving / Restoring Flags 
+  		- PUSHFD/POPFD
+  	- Saving / Restoring 
+  		- ENTER / LEAVE + RET
+  		you could also be saving frame pointer which is basically ebp using the enter and leave instruction
+  		set
+  Exercise : 
+  	Write a Program which saves registers and flags before calling a procedure 
+  	- it should also save / restore the frame pointer 
+  	
+  # Prologue and Epilogue 
+  
+  Reason : 
+  The key reason why you would want to do this is in very compicated long program you would want to retain the 
+  state probably in a main threat while different task are happening.
+  
     
-  
-  
- 
-  
+  		
   
   
   
