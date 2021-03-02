@@ -684,8 +684,34 @@
   The key reason why you would want to do this is in very compicated long program you would want to retain the 
   state probably in a main threat while different task are happening.
   
-    
+  # Strings : 
+  
+  	- Strings Instruction 
+  		- MOVS (MOVS/MOVSW/MOVSD)
+  		- CMPS - Compares
+  		- SCAS - Substract
+  		- LODS - Loads
   		
+  	ESI and EDI registers are typically used with DF
+  	ESI reference the source string 
+  	EDI reference the Destination string 
+  	
+  	 	 
+  # Libc and NASM 
+  	syscalls are good but .... 
+  	
+  	- Too low level at times 
+  	- Standard C Library - libc has tons of useful functions
+  	- Calling Libc function from assembly 
+  	 
+  	Things to Remember 
+  	
+  	- Define all the functions you want use with extern
+  	- All argument in reverse order on stack 
+  		- CALL function(a,b,c,d)
+  		- push d, push c, push b, push a
+  	- Adjust the stack after calling libc function 	
+  	- Link with GCC rather than LD - use main instead of _start
   
   
   
