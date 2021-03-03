@@ -1,0 +1,83 @@
+
+
+Module 2 : Introduction to Shellcoding
+
+# 1. Shellcoding Basics 
+
+	Ques : What is shellcode?
+	Ans  : Machine Code with a specific purpose 
+		- spawn a local shell 
+		- bind to port and spawn shell
+		- create a new shell 
+	       can be executed by the CPU directly - no further assembling / linking or seperate 
+	       compiling required. 
+	
+	Ques : How is shellcode delivered ? 
+	ans  : Part of an Exploit 
+		- size of shellcode important (smaller size = better)
+		- Bad character a concern 
+			- 0x00 most common
+	       Added into executables 
+		- run as seperated thread 
+		- replace executable functionality
+		- size of shellcode not a concern
+	# Shellcode resources 
+		- http://www.shell-storm.org/
+		- http://exploit-db.com/
+		- http://www.projectshellcode.com/
+
+	 
+        # Exit Shellcode 
+		global _start
+		section .text
+		_start: 
+			mov eax, 0x1
+			mov ebx, 0x10
+			int 0x80 
+	
+		- Use EAX and EBX register with the syscall number and exti code loads to 0x00 in shellcode
+		- change instruction to avoid 0x00 
+		- change instruction to make shellcode more compact 
+			
+	# Objdump to Shellcode
+		- command line FU 
+		 		 	 
+	# Helloworld Shellcode Using JMP-CALL-POP 
+	  Modifying the Hello world 
+		- Replace all 0x00 opcode instruction 
+		- No hardcoded Address 
+			- dynamically figure out address of Hello World string 
+	  we use JMP-CALL-POP Method 
+	
+	# JMP-CALL-POP 
+	  JMP short Call_shellcode:
+	  shellcode:
+		pop ecx
+		...
+		...
+		... 
+	  
+	  Call_shellcode:
+		
+		call shellcode:
+		HelloWorld  db "Hello World!"
+	Technique : whenever we call a label the next instruction after that call label instruction the address of that 
+		    next instruction is going to be push onto stack i.e the return address which is used  once we are 
+		    inside the procedure called by call we hit a ret and we would like to go back to execute a next 
+		    instruction after call 
+		    so the JMP-CALL-POP technique exploits this 
+	How ????  : first it does a short jump the best part about short jump is they use offsets which lie between -128 to
+		    127 so their is no hardcoded values. 
+		    
+		    JMP short Call_shellcode jumps to the call_shellcode label which ends up executing call shellcode
+		    now at this instance we end up pushing the next instruction address to the stack . the next instruction
+		    is the address of the hello world string in the program. 
+		
+		    Now as soon as the call shellcode execute we jump control to shellcode: label now the pop ecx pop out the 
+		    deword from the stack which is the address of the string "HelloWorld ". 
+	
+		    This is the complete procedure of JMP-CALL-POP
+ 	   	  	 	 
+	Problem : we are trying to reference message with its address but this is not desirable we need to find the address 
+		  dynamically at the run time and we need not to worry about the change in address  
+	  
