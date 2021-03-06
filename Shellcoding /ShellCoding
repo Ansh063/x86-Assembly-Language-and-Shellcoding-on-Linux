@@ -1,0 +1,144 @@
+
+
+Module 2 : Introduction to Shellcoding
+
+# 1. Shellcoding Basics 
+
+	Ques : What is shellcode?
+	Ans  : Machine Code with a specific purpose 
+		- spawn a local shell 
+		- bind to port and spawn shell
+		- create a new shell 
+	       can be executed by the CPU directly - no further assembling / linking or seperate 
+	       compiling required. 
+	
+	Ques : How is shellcode delivered ? 
+	ans  : Part of an Exploit 
+		- size of shellcode important (smaller size = better)
+		- Bad character a concern 
+			- 0x00 most common
+	       Added into executables 
+		- run as seperated thread 
+		- replace executable functionality
+		- size of shellcode not a concern
+	# Shellcode resources 
+		- http://www.shell-storm.org/
+		- http://exploit-db.com/
+		- http://www.projectshellcode.com/
+
+	 
+        # Exit Shellcode 
+		global _start
+		section .text
+		_start: 
+			mov eax, 0x1
+			mov ebx, 0x10
+			int 0x80 
+	
+		- Use EAX and EBX register with the syscall number and exti code loads to 0x00 in shellcode
+		- change instruction to avoid 0x00 
+		- change instruction to make shellcode more compact 
+			
+	# Objdump to Shellcode
+		- command line FU 
+		 		 	 
+	# Helloworld Shellcode Using JMP-CALL-POP 
+	  Modifying the Hello world 
+		- Replace all 0x00 opcode instruction 
+		- No hardcoded Address 
+			- dynamically figure out address of Hello World string 
+	  we use JMP-CALL-POP Method 
+	
+	# JMP-CALL-POP 
+	  JMP short Call_shellcode:
+	  shellcode:
+		pop ecx
+		...
+		...
+		... 
+	  
+	  Call_shellcode:
+		
+		call shellcode:
+		HelloWorld  db "Hello World!"
+	Technique : whenever we call a label the next instruction after that call label instruction the address of that 
+		    next instruction is going to be push onto stack i.e the return address which is used  once we are 
+		    inside the procedure called by call we hit a ret and we would like to go back to execute a next 
+		    instruction after call 
+		    so the JMP-CALL-POP technique exploits this 
+	How ????  : first it does a short jump the best part about short jump is they use offsets which lie between -128 to
+		    127 so their is no hardcoded values. 
+		    
+		    JMP short Call_shellcode jumps to the call_shellcode label which ends up executing call shellcode
+		    now at this instance we end up pushing the next instruction address to the stack . the next instruction
+		    is the address of the hello world string in the program. 
+		
+		    Now as soon as the call shellcode execute we jump control to shellcode: label now the pop ecx pop out the 
+		    deword from the stack which is the address of the string "HelloWorld ". 
+	
+		    This is the complete procedure of JMP-CALL-POP
+ 	   	  	 	 
+	Problem : we are trying to reference message with its address but this is not desirable we need to find the address 
+		  dynamically at the run time and we need not to worry about the change in address  
+
+	# Execve Shellcode JMP-CALL-POP Method
+	  Execute a new Program 
+	  - We need to find a syscall which can allow us execute a program within our shellcode 
+	  - "/bin/bash" to get a shell 
+	  - common technique to get a command prompt from an expolited process 
+	 - So we use the execve syscall for that purpose 
+
+	 command to get manual : man execve 
+
+	 execve takes three arguments : 
+		1 : the program pointed to by file name [path of the file ex. /bin/bash]  
+		2 : argv[] : argv is a array of argument string passed to the new program 
+		3 : envp[] : array of strings to set some additional arguments     
+ 	 - file name should be placed in EBX register : /bin/bash, 0x00
+ 	 - second agrument conatin address of /bin/bash placed in ECX : addressof /bin/bash, 0x00000000
+	 - envp just contain the address which points to null placed in EDX register : 0x00000000
+	NOte: there are so many null character but we cannot store it into shellcode now to solve this 
+	
+       # Approach to eliminate null character 
+        - first initialize the string as /bin/bashABBBBCCCC
+ 	- we have to use ESI because all four (EAX, EBX, ECX, EDX) are in use
+	
+	1. Use JMP-CALL-POP to find the address of the string 
+	2. Now we have to convert A to 0x0
+	3. conert "BBBB" to address of "/bin/bash"
+	4. convert "CCCC" to all the nulls : 0x00000000
+	
+       # Is there a need for exit()
+        - execve does not return if successful
+        - There is no need for exit() to be called 
+
+       # Execve Shellcode Stack Method 
+        The key Difference is that rather than pushing them in specific order we are gone to push them in different order 
+	and then point the appropriate registers in such a way so that this condition in the previous setup is valid.
+
+	- First we push the dword conatining all the nulls character i.e 0x00000000
+ 	- Next thing we will push is the string /bin/bash on the stack
+	- Whenever you run a program by giving its path the number of slashes using their doesn't realy matter 
+	- now make it length of the string in multiple of 4 by adding extra slashes  
+	- reverse a string and change it into hex and push on to the stack 
+
+       # XOR Encoder and Decoder 
+        - 0	0	0
+	- 1	1	0
+	- 0	1	1
+	- 1	0	1
+ 	= (A XOR B) XOR B = A
+	- select an encode byte eg. 0xAA
+	- XOR every Byte of shellcode with 0xAA
+	- write a decoder stub which will XOR the encoded shellcode byte with 0xAA and recover original shellcode
+	- stub then passes the control to decoded shellcode 
+	
+	Procedure : 
+	first we do byte by byte xoring with 0xAA with our shellcode we get the output which is the encoded output 
+	Now in program we write a XOR Decoder Stub in most common case prepend it to the encoded shellcode
+	and what this decoder stub does it works on the shellcode and decode it in memory to give us back the 
+	original shellcode now after this is done the decoder stub passes control to the original shellcode.
+	then our original shellcode will run.
+	original shellcode is the shellcode after compiling shellcode.c
+	
+	 
